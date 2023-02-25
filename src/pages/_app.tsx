@@ -11,10 +11,10 @@ const getThemeOptions = (mode: PaletteMode) => ({
 	palette: {
 		mode: mode,
 		primary: {
-			main: '#fff',
+			main: '#2C63C8',
 		},
 		secondary: {
-			main: '#A459D1',
+			main: '#fff',
 		},
 		error: {
 			main: '#d32f2f',

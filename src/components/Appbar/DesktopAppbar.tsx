@@ -67,11 +67,11 @@ export default function DesktopAppbar() {
 						fontWeight="bold"
 						noWrap
 						component="div"
-						color="secondary"
+						color="primary"
 						sx={{ display: { xs: 'none', sm: 'block' } }}
 						width="200px"
 					>
-						Pickbook
+						Pikaboost
 					</Typography>
 					<Search>
 						<StyledInputBase
@@ -95,7 +95,7 @@ export default function DesktopAppbar() {
 								{theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
 							</IconButton>
 						</AppbarElementContainer >
-						<AppbarElementContainer sx={{backgroundColor: theme.palette.secondary.main, padding: 1, ml: 0.5, borderRadius: 2}}>
+						<AppbarElementContainer sx={{backgroundColor: theme.palette.primary.main, padding: 1, ml: 0.5, borderRadius: 2}}>
 							<Typography color={'white'}>GitHub</Typography>
 						</AppbarElementContainer>
 					</Box>

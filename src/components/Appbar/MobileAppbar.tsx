@@ -52,7 +52,7 @@ export default function MobileAppbar() {
 							fontWeight="bold"
 							noWrap
 							component="div"
-							color="secondary"
+							color="component"
 							margin={2}
 							width="50px"
 						>
@@ -64,7 +64,7 @@ export default function MobileAppbar() {
 							fontWeight="bold"
 							noWrap
 							component="div"
-							color="secondary"
+							color="component"
 							width="200px"
 						>
               Pickbook
