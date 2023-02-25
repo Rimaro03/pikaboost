@@ -60,7 +60,7 @@ export default function DesktopAppbar() {
 	};
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static" color="transparent">
+			<AppBar position="fixed" color="transparent" sx={{ width: `calc(100% - ${240}px)`, ml: `${240}px` }}>
 				<Toolbar sx={{justifyContent: 'space-between'}}>
 					<Typography
 						variant="h4"

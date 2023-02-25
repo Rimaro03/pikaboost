@@ -4,6 +4,7 @@ import UserPage from '@/components/UserPage';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
+import PermanentDrawer from '@/components/Drawer/PermanentDrawer';
 
 
 export default function homepage(){
@@ -16,9 +17,11 @@ export default function homepage(){
 		}
 	}, []);
 
+	const drawerWidth = 240;
 	return(
 		<Box>
 			<Appbar />
+			<PermanentDrawer />
 		</Box>
 	);
 }
