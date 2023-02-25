@@ -1,17 +1,33 @@
-import { Brightness4Rounded, Collections, GitHub, Home, InsertPhoto, SupervisedUserCircle } from '@mui/icons-material';
-import { Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, useTheme } from '@mui/material';
-import { alpha, Box } from '@mui/system';
+import { Add, Explore, Favorite, Home, Search } from '@mui/icons-material';
+import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import * as React from 'react';
 
 export default function PermanentDrawer(){
-	const theme = useTheme();
 	const list = () => (
 		<Box
 			sx={{ width: 250 }}
 			role="presentation"
 		>
+			<Toolbar>
+				<Typography
+					variant="h4"
+					fontWeight="bold"
+					noWrap
+					component="div"
+					color="primary"
+					sx={{ display: { xs: 'none', sm: 'block' } }}
+					width="200px"
+				>
+						Pikaboost
+				</Typography>
+			</Toolbar>
 			<Toolbar />
-			<List>
+			<List
+				sx={{
+					bgcolor: 'background.paper',
+				}}
+			>
 				<Typography ml={2}>App</Typography>
 				<ListItem>
 					<ListItemButton>
@@ -24,34 +40,36 @@ export default function PermanentDrawer(){
 				<ListItem>
 					<ListItemButton>
 						<ListItemIcon>
-							<Collections /> 
+							<Explore /> 
 						</ListItemIcon>
-						<ListItemText primary={'Collections'} />
+						<ListItemText primary={'Explore'} />
 					</ListItemButton>
 				</ListItem>
 				<ListItem>
 					<ListItemButton>
 						<ListItemIcon>
-							<SupervisedUserCircle /> 
+							<Search /> 
 						</ListItemIcon>
-						<ListItemText primary={'Users'} />
-					</ListItemButton>
-				</ListItem>
-				<Divider />
-				<ListItem>
-					<ListItemButton>
-						<ListItemIcon>
-							<Brightness4Rounded />
-						</ListItemIcon>
-						<ListItemText primary={'Light mode'} />
+						<ListItemText primary={'Search'} />
 					</ListItemButton>
 				</ListItem>
 				<ListItem>
 					<ListItemButton>
 						<ListItemIcon>
-							<GitHub />
+							<Add /> 
 						</ListItemIcon>
-						<ListItemText primary={'Github'} />
+						<ListItemText primary={'Create Playlist'} />
+					</ListItemButton>
+				</ListItem>
+
+				<Toolbar />
+				<Typography ml={2}>Personal</Typography>
+				<ListItem>
+					<ListItemButton>
+						<ListItemIcon>
+							<Favorite />
+						</ListItemIcon>
+						<ListItemText primary={'Favourite'} />
 					</ListItemButton>
 				</ListItem>
 			</List>

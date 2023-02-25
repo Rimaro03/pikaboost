@@ -10,9 +10,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { IconButton, useTheme } from '@mui/material';
+import { Button, ButtonBase, Icon, IconButton, ListItem, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ColorModeContext } from '@/pages/_app';
+import { AccountCircle, ArrowBack, ArrowBackIos, ArrowBackIosNew, ArrowForward, ArrowForwardIos } from '@mui/icons-material';
 
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
@@ -35,18 +36,16 @@ const StyledInputBase = styled(InputBase)(() => ({
 	width: '100%',
 }));
 
-const AppbarElement = styled(Typography)(()=>({
-	fontWeight: 600,
-	fontSize: 16,
-}));
-
-const AppbarElementContainer = styled(Box)(()=>({
+const AppbarElementContainer = styled(Box)(({ theme })=>({
 	display: 'flex',
-	margin: 'auto',
+	margin: 2,
 	alignItems: 'center',
 	':hover': {
-		cursor: 'pointer'
-	}
+		cursor: 'pointer',
+		backgroundColor: alpha(theme.palette.text.primary, 0.15),
+	},
+	padding: 7,
+	borderRadius: 10
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -55,24 +54,25 @@ export default function DesktopAppbar() {
 	const theme = useTheme();
 	const colorMode = React.useContext(ColorModeContext);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-	const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorEl(event.currentTarget);
+	const [mode, setMode] = useState(theme.palette.mode);
+
+	const handleModeChange = () => {
+		colorMode.toggleColorMode();
+		mode == 'dark' ? setMode('light') : setMode('dark');
 	};
+
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="fixed" color="transparent" sx={{ width: `calc(100% - ${240}px)`, ml: `${240}px` }}>
-				<Toolbar sx={{justifyContent: 'space-between'}}>
-					<Typography
-						variant="h4"
-						fontWeight="bold"
-						noWrap
-						component="div"
-						color="primary"
-						sx={{ display: { xs: 'none', sm: 'block' } }}
-						width="200px"
-					>
-						Pikaboost
-					</Typography>
+				<Toolbar sx={{justifyContent: 'space-around'}}>
+					<Box sx={{display: 'flex', justifyContent: 'space-between' ,width: '50px'}}>
+						<IconButton>
+							<ArrowBackIosNew />
+						</IconButton>
+						<IconButton>
+							<ArrowForwardIos />
+						</IconButton>
+					</Box>
 					<Search>
 						<StyledInputBase
 							placeholder="Search…"
@@ -82,21 +82,21 @@ export default function DesktopAppbar() {
 							<SearchIcon />
 						</IconButton>
 					</Search>
-					<Box sx={{ display: 'flex', justifyContent: 'space-between', width: '350px' }} >
-						<AppbarElementContainer onMouseEnter={handleMouseEnter}>
-							<AppbarElement>Explore</AppbarElement>
-							{anchorEl ? 
-								<KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
-							}
-						</AppbarElementContainer>
-						<AppbarElementContainer onClick={colorMode.toggleColorMode}>
-							<AppbarElement>{theme.palette.mode} mode</AppbarElement>
-							<IconButton sx={{ ml: 1 }} color="inherit">
-								{theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-							</IconButton>
+					<Box sx={{ display: 'flex', justifyContent: 'space-between', width: '300px' }} >
+						<AppbarElementContainer onClick={handleModeChange}>
+							{mode === 'dark' ? 
+								<Box sx={{display: 'flex', flexDirection: 'row'}}>
+									<Brightness7Icon fontSize='large'/>
+									<Typography margin={'auto'} ml={1}>Light</Typography>
+								</Box>
+								: <Box sx={{display: 'flex', flexDirection: 'row'}}>
+									<Brightness4Icon fontSize='large'/>
+									<Typography margin={'auto'} ml={1}>Dark</Typography>
+								</Box>}
 						</AppbarElementContainer >
-						<AppbarElementContainer sx={{backgroundColor: theme.palette.primary.main, padding: 1, ml: 0.5, borderRadius: 2}}>
-							<Typography color={'white'}>GitHub</Typography>
+						<AppbarElementContainer>
+							<AccountCircle fontSize='large' />
+							<Typography margin={'auto'} ml={1}>leonardo.ongaro</Typography>
 						</AppbarElementContainer>
 					</Box>
 				</Toolbar>
