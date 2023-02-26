@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app';
-import { CookiesProvider } from 'react-cookie';
-import React, { createContext, Dispatch, SetStateAction, useState } from 'react';
+import { CookiesProvider, useCookies } from 'react-cookie';
+import React, { createContext, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme, CssBaseline, PaletteMode } from '@mui/material';
 import { User } from '@/interfaces/User';
@@ -76,6 +76,8 @@ const getThemeOptions = (mode: PaletteMode) => ({
 export default function App({ Component, pageProps }: AppProps) {
 	const [mode, setMode] = React.useState<'light' | 'dark'>('dark');
 	const [userData, setUserData] = useState(emptyUser);
+	const [cookies, setCookie] = useCookies(['access_token', 'refresh_token']);
+
 	const colorMode = React.useMemo(
 		() => ({
 			toggleColorMode: () => {
@@ -90,6 +92,19 @@ export default function App({ Component, pageProps }: AppProps) {
 			createTheme(getThemeOptions(mode)),
 		[mode],
 	);
+
+	useEffect(()=>{
+		fetch('http://localhost:3000/api/users/userData', {headers: {'access_token': cookies.access_token}})
+			.then(res => {
+				if(res.ok){
+					return res.json();
+				}
+				throw res;
+			})
+			.then(data => setUserData(data))
+			.catch(err => console.log(err));
+	}, []);
+
 	return (
 		<CookiesProvider>
 			<ColorModeContext.Provider value={colorMode}>
