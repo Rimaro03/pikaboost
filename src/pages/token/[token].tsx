@@ -13,8 +13,8 @@ export default function Token({params}: any){
 	const [cookies, setCookie] = useCookies(['access_token', 'refresh_token']);
 
 	useEffect(()=>{
-		setCookie('access_token',params.access_token, {path: '/'});
-		setCookie('refresh_token',params.refresh_token, {path: '/'});
+		setCookie('access_token',params.access_token, {path: '/', maxAge: 5600});
+		setCookie('refresh_token',params.refresh_token, {path: '/', maxAge: 5600});
 
 		router.push('/');
 	}, []);

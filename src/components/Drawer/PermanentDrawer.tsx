@@ -9,19 +9,7 @@ export default function PermanentDrawer(){
 			sx={{ width: 250 }}
 			role="presentation"
 		>
-			<Toolbar>
-				<Typography
-					variant="h4"
-					fontWeight="bold"
-					noWrap
-					component="div"
-					color="primary"
-					sx={{ display: { xs: 'none', sm: 'block' } }}
-					width="200px"
-				>
-						Pikaboost
-				</Typography>
-			</Toolbar>
+
 			<Toolbar />
 			<List
 				sx={{

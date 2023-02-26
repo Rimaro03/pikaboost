@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -6,14 +7,14 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { Button, ButtonBase, Icon, IconButton, ListItem, useTheme } from '@mui/material';
+import { IconButton, Menu, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ColorModeContext } from '@/pages/_app';
-import { AccountCircle, ArrowBack, ArrowBackIos, ArrowBackIosNew, ArrowForward, ArrowForwardIos } from '@mui/icons-material';
+import { UserContext } from '@/pages/_app';
+import { AccountCircle,ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
+import UserMenu from '../Menu/UserMenu';
 
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
@@ -53,12 +54,24 @@ const AppbarElementContainer = styled(Box)(({ theme })=>({
 export default function DesktopAppbar() {
 	const theme = useTheme();
 	const colorMode = React.useContext(ColorModeContext);
+	const {userData, setUserData} = React.useContext(UserContext);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const [menuOpen, setMenuOpen] = useState<boolean>(false);
 	const [mode, setMode] = useState(theme.palette.mode);
 
 	const handleModeChange = () => {
 		colorMode.toggleColorMode();
 		mode == 'dark' ? setMode('light') : setMode('dark');
+	};
+
+	const handleMenuOpen = (event: React.MouseEvent<HTMLDivElement>) => {
+		setMenuOpen(!menuOpen);
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleMenuClose = () => {
+		setMenuOpen(false);
+		setAnchorEl(null);
 	};
 
 	return (
@@ -84,7 +97,7 @@ export default function DesktopAppbar() {
 					</Search>
 					<Box sx={{ display: 'flex', justifyContent: 'space-between', width: '300px' }} >
 						<AppbarElementContainer onClick={handleModeChange}>
-							{mode === 'dark' ? 
+							{mode === 'light' ? 
 								<Box sx={{display: 'flex', flexDirection: 'row'}}>
 									<Brightness7Icon fontSize='large'/>
 									<Typography margin={'auto'} ml={1}>Light</Typography>
@@ -94,13 +107,20 @@ export default function DesktopAppbar() {
 									<Typography margin={'auto'} ml={1}>Dark</Typography>
 								</Box>}
 						</AppbarElementContainer >
-						<AppbarElementContainer>
+						<AppbarElementContainer onClick={handleMenuOpen}>
 							<AccountCircle fontSize='large' />
-							<Typography margin={'auto'} ml={1}>leonardo.ongaro</Typography>
+							<Typography margin={'auto'} ml={1}>{userData.id}</Typography>
 						</AppbarElementContainer>
 					</Box>
 				</Toolbar>
 			</AppBar>
+			<Menu
+				open={menuOpen}
+				anchorEl={anchorEl}
+				onClose={handleMenuClose}
+			>
+				<UserMenu />
+			</Menu>
 		</Box>
 	);
 }

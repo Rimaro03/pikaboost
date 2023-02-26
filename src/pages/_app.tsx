@@ -1,11 +1,40 @@
 import type { AppProps } from 'next/app';
 import { CookiesProvider } from 'react-cookie';
-import React from 'react';
+import React, { createContext, Dispatch, SetStateAction, useState } from 'react';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme, CssBaseline, PaletteMode } from '@mui/material';
+import { User } from '@/interfaces/User';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+interface userContext {
+	userData: User,
+	setUserData: Dispatch<SetStateAction<User>>
+}
+
+const emptyUser: User = {
+	'country': '',
+	'display_name': '',
+	'email': '',
+	'explicit_content': {
+		filter_enabled: false,
+		filter_locked: false
+	},
+	'external_urls': {},
+	'followers': {
+		'total': 0,
+		'href': null
+	},
+	'href': '',
+	'id': '',
+	'images': [],
+	'product': '',
+	'type': '',
+	'uri': ''
+};
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+export const UserContext = createContext<userContext>({userData: emptyUser, setUserData: ()=>{} });
 
 const getThemeOptions = (mode: PaletteMode) => ({
 	palette: {
@@ -27,7 +56,7 @@ const getThemeOptions = (mode: PaletteMode) => ({
 		},
 		success: {
 			main: '#2e7d32',
-		},
+		}
 	},
 	typography: {
 		fontFamily: 'PlusJakartaSans,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Cantarell,Helvetica Neue,Ubuntu,sans-serif',
@@ -46,6 +75,7 @@ const getThemeOptions = (mode: PaletteMode) => ({
 
 export default function App({ Component, pageProps }: AppProps) {
 	const [mode, setMode] = React.useState<'light' | 'dark'>('dark');
+	const [userData, setUserData] = useState(emptyUser);
 	const colorMode = React.useMemo(
 		() => ({
 			toggleColorMode: () => {
@@ -63,10 +93,12 @@ export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<CookiesProvider>
 			<ColorModeContext.Provider value={colorMode}>
-				<ThemeProvider theme={newTheme}>
-					<CssBaseline />
-					<Component {...pageProps} />
-				</ThemeProvider>
+				<UserContext.Provider value={{userData: userData, setUserData: setUserData}}>
+					<ThemeProvider theme={newTheme}>
+						<CssBaseline />
+						<Component {...pageProps} />
+					</ThemeProvider>
+				</UserContext.Provider>
 			</ColorModeContext.Provider>
 		</CookiesProvider>
 	);
