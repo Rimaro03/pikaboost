@@ -1,7 +1,7 @@
-import { MoreVert } from '@mui/icons-material';
-import { Avatar, IconButton, ListItem, ListItemAvatar, Paper, Typography } from '@mui/material';
+import { MoreVert, PlayArrow } from '@mui/icons-material';
+import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemIcon, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useState } from 'react';
 
 const  millisToMinutesAndSeconds = (millis: number) => {
 	const minutes: number = Math.floor(millis / 60000);
@@ -10,8 +10,22 @@ const  millisToMinutesAndSeconds = (millis: number) => {
 };
 
 export default function TrackSmall({track}: any){
+	const [trackIcon, setTrackIcon] = useState<JSX.Element>(<Avatar src={track.album.images[1].url} />);
+
+	const handleMouseEnter = () => {
+		setTrackIcon(
+			<Avatar>
+				<PlayArrow />
+			</Avatar>
+		);
+	};
+
+	const handleMouseLeave = () => {
+		setTrackIcon(<Avatar src={track.album.images[1].url} />);
+	};
+
 	return(
-		<Paper elevation={3} sx={{
+		<Paper elevation={3} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} sx={{
 			backgroundColor: 'secondary',
 			transition: 'transform .2s',
 			':hover': {
@@ -19,7 +33,8 @@ export default function TrackSmall({track}: any){
 				cursor: 'pointer'
 			},
 			mt: 1,
-		}}>
+		}}
+		>
 			<ListItem secondaryAction={
 				<IconButton edge="end" aria-label="more">
 					<MoreVert />
@@ -27,7 +42,7 @@ export default function TrackSmall({track}: any){
 			}
 			>
 				<ListItemAvatar>
-					<Avatar src={track.album.images[1].url} />
+					{trackIcon}
 				</ListItemAvatar>
 				<Box sx={{display: 'flex', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
 					<Typography>{track.name}</Typography>

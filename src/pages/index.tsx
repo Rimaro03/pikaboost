@@ -9,6 +9,7 @@ import PlaylistLarge from '@/components/Cards/Playlist/PlaylistLarge';
 import Bottombar from '@/components/Bottombar/Bottombar';
 import { MoreVert } from '@mui/icons-material';
 import TrackSmall from '@/components/Cards/Tracks/TrackSmall';
+import Category from '@/components/Cards/Categories/Category';
 
 export default function homepage() {
 	const router = useRouter();
@@ -16,6 +17,7 @@ export default function homepage() {
 	const [loading, setLoading] = useState(true);
 	const [topPlaylists, setTopPlaylists] = useState([]);
 	const [recentTracks, setRecentTracks] = useState([]);
+	const [categories, setCategories] = useState([]);
 
 	useEffect(() => {
 		if (!cookies.access_token || !cookies.refresh_token) {
@@ -29,10 +31,7 @@ export default function homepage() {
 				throw res;
 			})
 			.then(data => setTopPlaylists(data.items))
-			.catch(err => console.log(err))
-			.finally(() => {
-				setLoading(false);
-			});
+			.catch(err => console.log(err));
 		fetch('http://localhost:3000/api/me/recentTracks?limit=5', { headers: { 'access_token': cookies.access_token } })
 			.then(res => {
 				if (res.ok) {
@@ -41,10 +40,20 @@ export default function homepage() {
 				throw res;
 			})
 			.then(data => setRecentTracks(data.items))
-			.catch(err => console.log(err))
-			.finally(() => {
-				setLoading(false);
-			});
+			.catch(err => console.log(err));
+		fetch('http://localhost:3000/api/categories/categories?limit=4', { headers: { 'access_token': cookies.access_token } })
+			.then(res => {
+				if (res.ok) {
+					return res.json();
+				}
+				throw res;
+			})
+			.then(data => setCategories(data.categories.items))
+			.catch(err => console.log(err));
+
+		if(topPlaylists && recentTracks && categories){
+			setLoading(false);
+		}
 	}, []);
 
 	return (
@@ -94,22 +103,10 @@ export default function homepage() {
 							</Box>
 							<Box>
 								<Typography variant='h5' fontWeight={'bold'}>TOP CATEGORIES</Typography>	
-								<Grid container spacing={2}>
-									<Grid item xl={6}>
-										<p>item</p>
-									</Grid>
-									<Grid item xl={6}>
-										<p>item</p>
-
-									</Grid>
-									<Grid item xl={6}>
-										<p>item</p>
-
-									</Grid>
-									<Grid item xl={6}>
-										<p>item</p>
-
-									</Grid>
+								<Grid container spacing={2} mt={1}>
+									{categories.map((item, index)=>(
+										<Category category={item} key={index} />
+									))}
 								</Grid>
 							</Box>
 						</Box>

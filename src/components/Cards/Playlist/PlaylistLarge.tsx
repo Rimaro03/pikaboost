@@ -44,7 +44,8 @@ export default function PlaylistLarge({playlist}: any){
 				image={playlist.images[0].url}
 				alt={playlist.name}
 				sx={{
-					borderRadius: 5
+					borderRadius: 5,
+					height: 170
 				}}
 			/>
 			<CardContent sx={{
