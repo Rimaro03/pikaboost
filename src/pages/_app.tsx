@@ -94,7 +94,7 @@ export default function App({ Component, pageProps }: AppProps) {
 	);
 
 	useEffect(()=>{
-		fetch('http://localhost:3000/api/users/userData', {headers: {'access_token': cookies.access_token}})
+		fetch('http://localhost:3000/api/me/userData', {headers: {'access_token': cookies.access_token}})
 			.then(res => {
 				if(res.ok){
 					return res.json();
