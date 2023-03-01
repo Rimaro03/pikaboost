@@ -29,12 +29,11 @@ export default function Playlist({playlist}: any){
 	return(
 		<Card sx={{
 			padding: 2,
-			margin: 1,
 			backgroundColor: 'transparent',
 			boxShadow: 'none',
 			transition: 'transform .2s',
-			height: 'auto',
-			width: 220,
+			width: 200,
+			height: 310,
 			':hover': {
 				transform: 'scale(1.05)',
 				cursor: 'pointer'
@@ -44,7 +43,9 @@ export default function Playlist({playlist}: any){
 				component={'img'}
 				image={playlist.images[0].url}
 				alt={playlist.name}
-
+				sx={{
+					borderRadius: 5
+				}}
 			/>
 			<CardContent sx={{
 				display: 'flex',

@@ -12,7 +12,7 @@ export default function handler(
 	res: NextApiResponse<Data>
 ) {
 	const authOptions = {
-		url: `https://api.spotify.com/v1/me/playlists?limit=${req.query.limit}`,
+		url: `https://api.spotify.com/v1/me/player/recently-played?limit=${req.query.limit}`,
 		headers: { 'Authorization': 'Bearer ' + req.headers.access_token},
 		json: true
 	};
