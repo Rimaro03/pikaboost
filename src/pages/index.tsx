@@ -5,15 +5,10 @@ import { AppBar, Avatar, Backdrop, Box, CircularProgress, Grid, IconButton, List
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import PermanentDrawer from '@/components/Drawer/PermanentDrawer';
-import Playlist from '@/components/Cards/Large/Playlist';
+import PlaylistLarge from '@/components/Cards/Playlist/PlaylistLarge';
 import Bottombar from '@/components/Bottombar/Bottombar';
 import { MoreVert } from '@mui/icons-material';
-
-const  millisToMinutesAndSeconds = (millis: number) => {
-	const minutes: number = Math.floor(millis / 60000);
-	const seconds: number = parseInt(((millis % 60000) / 1000).toFixed(0));
-	return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-};
+import TrackSmall from '@/components/Cards/Tracks/TrackSmall';
 
 export default function homepage() {
 	const router = useRouter();
@@ -83,7 +78,7 @@ export default function homepage() {
 							<Grid container spacing={2} mt={2}>
 								{topPlaylists.map((item, index)=>(
 									<Grid item key={index} xs={8} md={4} xl={2} width='min-content'>
-										<Playlist playlist={item} key={index}/>
+										<PlaylistLarge playlist={item} key={index}/>
 									</Grid>
 								))}
 							</Grid>
@@ -93,30 +88,7 @@ export default function homepage() {
 								<Typography variant='h5' fontWeight={'bold'}>RECENTLY PLAYED</Typography>	
 								<List>
 									{recentTracks.map((item, index)=>(
-										<Paper key={index} elevation={3} sx={{
-											backgroundColor: 'secondary',
-											transition: 'transform .2s',
-											':hover': {
-												transform: 'scale(1.05)',
-												cursor: 'pointer'
-											},
-											mt: 1,
-										}}>
-											<ListItem secondaryAction={
-												<IconButton edge="end" aria-label="more">
-													<MoreVert />
-												</IconButton>
-											}
-											>
-												<ListItemAvatar>
-													<Avatar src={item.track.album.images[1].url} />
-												</ListItemAvatar>
-												<Box sx={{display: 'flex', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-													<Typography>{item.track.name}</Typography>
-													<Typography color={'#6c757d'}>{millisToMinutesAndSeconds(item.track.duration_ms)}</Typography>
-												</Box>
-											</ListItem>
-										</Paper>
+										<TrackSmall track={item.track} index={index} key={index}/>
 									))}
 								</List>
 							</Box>

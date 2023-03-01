@@ -1,7 +1,7 @@
 import { Card, CardContent, CardMedia, Link, Typography } from '@mui/material';
 import React from 'react';
 
-export default function Playlist({playlist}: any){
+export default function PlaylistLarge({playlist}: any){
 
 	const findLinks = (text: string) => {
 		const array = text.split('<a ');
