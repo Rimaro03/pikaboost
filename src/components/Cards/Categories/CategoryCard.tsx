@@ -1,8 +1,9 @@
 import { Grid, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
+import { Category } from 'spotify-types';
 
-export default function Category({category}: any){
+export default function CategoryCard({category}: {category: Category}){
 	return(
 		<Grid item xl={6} sx={{
 			transition: 'transform .2s',

@@ -1,2 +1,3 @@
 playlist interface
 track interface
+props interfaces

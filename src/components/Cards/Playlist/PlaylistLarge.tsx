@@ -1,7 +1,8 @@
 import { Card, CardContent, CardMedia, Link, Typography } from '@mui/material';
 import React from 'react';
+import { Playlist } from 'spotify-types';
 
-export default function PlaylistLarge({playlist}: any){
+export default function PlaylistLarge({playlist}: {playlist: Playlist}){
 
 	const findLinks = (text: string) => {
 		const array = text.split('<a ');
@@ -24,7 +25,10 @@ export default function PlaylistLarge({playlist}: any){
 		return elements;
 	};
 
-	const elements = findLinks(playlist.description);
+	let elements: JSX.Element[] = [];
+	if(playlist.description){
+		elements = findLinks(playlist.description);
+	}
 
 	return(
 		<Card sx={{
@@ -57,7 +61,7 @@ export default function PlaylistLarge({playlist}: any){
 					{playlist.name}
 				</Typography>
 				<Typography variant="subtitle2" height={'calc(2vh*3)'} >
-					{elements.map((item, index)=>(
+					{elements.map((item)=>(
 						item
 					))}
 				</Typography>

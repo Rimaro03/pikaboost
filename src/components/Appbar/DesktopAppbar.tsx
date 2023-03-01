@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -58,6 +58,10 @@ export default function DesktopAppbar() {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [menuOpen, setMenuOpen] = useState<boolean>(false);
 	const [mode, setMode] = useState(theme.palette.mode);
+	
+	useEffect(()=>{
+		console.log(userData);
+	}, []);
 
 	const handleModeChange = () => {
 		colorMode.toggleColorMode();

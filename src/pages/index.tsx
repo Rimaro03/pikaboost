@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import Appbar from '@/components/Appbar/Appbar';
-import { AppBar, Avatar, Backdrop, Box, CircularProgress, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Skeleton, Typography } from '@mui/material';
+import { Box, Grid,  List,Skeleton, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import PermanentDrawer from '@/components/Drawer/PermanentDrawer';
 import PlaylistLarge from '@/components/Cards/Playlist/PlaylistLarge';
 import Bottombar from '@/components/Bottombar/Bottombar';
-import { MoreVert } from '@mui/icons-material';
 import TrackSmall from '@/components/Cards/Tracks/TrackSmall';
-import Category from '@/components/Cards/Categories/Category';
+import CategoryCard from '@/components/Cards/Categories/CategoryCard';
+import { Category, Playlist, Track } from 'spotify-types';
 
 export default function homepage() {
 	const router = useRouter();
 	const [cookies, setCookie] = useCookies(['access_token', 'refresh_token']);
 	const [loading, setLoading] = useState(true);
-	const [topPlaylists, setTopPlaylists] = useState([]);
-	const [recentTracks, setRecentTracks] = useState([]);
-	const [categories, setCategories] = useState([]);
+	const [topPlaylists, setTopPlaylists] = useState<Playlist[] | []>([]);
+	const [recentTracks, setRecentTracks] = useState<Track[] | []>([]);
+	const [categories, setCategories] = useState<Category[] | []>([]);
 
 	useEffect(() => {
 		if (!cookies.access_token || !cookies.refresh_token) {
@@ -39,7 +39,10 @@ export default function homepage() {
 				}
 				throw res;
 			})
-			.then(data => setRecentTracks(data.items))
+			.then(data => {
+				const items: Track[] = data.items.map((item: { track: Track; }) => item.track);
+				setRecentTracks(items);
+			})
 			.catch(err => console.log(err));
 		fetch('http://localhost:3000/api/categories/categories?limit=4', { headers: { 'access_token': cookies.access_token } })
 			.then(res => {
@@ -97,7 +100,7 @@ export default function homepage() {
 								<Typography variant='h5' fontWeight={'bold'}>RECENTLY PLAYED</Typography>	
 								<List>
 									{recentTracks.map((item, index)=>(
-										<TrackSmall track={item.track} index={index} key={index}/>
+										<TrackSmall track={item} key={index}/>
 									))}
 								</List>
 							</Box>
@@ -105,7 +108,7 @@ export default function homepage() {
 								<Typography variant='h5' fontWeight={'bold'}>TOP CATEGORIES</Typography>	
 								<Grid container spacing={2} mt={1}>
 									{categories.map((item, index)=>(
-										<Category category={item} key={index} />
+										<CategoryCard category={item} key={index} />
 									))}
 								</Grid>
 							</Box>

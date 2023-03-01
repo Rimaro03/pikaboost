@@ -2780,6 +2780,11 @@ source-map@^0.5.7:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==
 
+spotify-types@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/spotify-types/-/spotify-types-1.0.7.tgz#59c2e16da2ae18b8adb97e07a9e378d8567f4464"
+  integrity sha512-X2n0MYNUpgakGDU7h/vzTvqVJh2f8kAWE9SG5TkJtf3lJcorndK24/8/6+D7Uww8tqUD1VPHg5Lqv4usdVJUvg==
+
 sshpk@^1.7.0:
   version "1.17.0"
   resolved "https://registry.npmjs.org/sshpk/-/sshpk-1.17.0.tgz"

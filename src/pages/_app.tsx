@@ -3,38 +3,17 @@ import { CookiesProvider, useCookies } from 'react-cookie';
 import React, { createContext, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme, CssBaseline, PaletteMode } from '@mui/material';
-import { User } from '@/interfaces/User';
+import { PublicUser } from 'spotify-types';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+
 interface userContext {
-	userData: User,
-	setUserData: Dispatch<SetStateAction<User>>
+	userData: PublicUser | undefined,
+	setUserData: Dispatch<SetStateAction<PublicUser | undefined>>
 }
-
-const emptyUser: User = {
-	'country': '',
-	'display_name': '',
-	'email': '',
-	'explicit_content': {
-		filter_enabled: false,
-		filter_locked: false
-	},
-	'external_urls': {},
-	'followers': {
-		'total': 0,
-		'href': null
-	},
-	'href': '',
-	'id': '',
-	'images': [],
-	'product': '',
-	'type': '',
-	'uri': ''
-};
-
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export const UserContext = createContext<userContext>({userData: emptyUser, setUserData: ()=>{} });
+export const UserContext = createContext<userContext>({userData: undefined, setUserData: ()=>{} });
 
 const getThemeOptions = (mode: PaletteMode) => ({
 	palette: {
@@ -75,8 +54,9 @@ const getThemeOptions = (mode: PaletteMode) => ({
 
 export default function App({ Component, pageProps }: AppProps) {
 	const [mode, setMode] = React.useState<'light' | 'dark'>('dark');
-	const [userData, setUserData] = useState(emptyUser);
+	const [userData, setUserData] = useState<PublicUser>();
 	const [cookies, setCookie] = useCookies(['access_token', 'refresh_token']);
+	const [loading, setLoading] = useState(true);
 
 	const colorMode = React.useMemo(
 		() => ({
@@ -102,19 +82,24 @@ export default function App({ Component, pageProps }: AppProps) {
 				throw res;
 			})
 			.then(data => setUserData(data))
-			.catch(err => console.log(err));
+			.catch(err => console.log(err))
+			.finally(()=>{setLoading(false);});
 	}, []);
 
 	return (
 		<CookiesProvider>
-			<ColorModeContext.Provider value={colorMode}>
-				<UserContext.Provider value={{userData: userData, setUserData: setUserData}}>
-					<ThemeProvider theme={newTheme}>
-						<CssBaseline />
-						<Component {...pageProps} />
-					</ThemeProvider>
-				</UserContext.Provider>
-			</ColorModeContext.Provider>
+			{!loading ? 
+				<ColorModeContext.Provider value={colorMode}>
+					<UserContext.Provider value={{userData: userData, setUserData: setUserData}}>
+						<ThemeProvider theme={newTheme}>
+							<CssBaseline />
+							<Component {...pageProps} />
+						</ThemeProvider>
+					</UserContext.Provider>
+				</ColorModeContext.Provider>
+				:
+				<></>
+			}
 		</CookiesProvider>
 	);
 }

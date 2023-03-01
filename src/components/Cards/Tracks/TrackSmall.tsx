@@ -1,7 +1,8 @@
 import { MoreVert, PlayArrow } from '@mui/icons-material';
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemIcon, Paper, Typography } from '@mui/material';
+import { Avatar, IconButton, ListItem, ListItemAvatar, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
+import { Track } from 'spotify-types';
 
 const  millisToMinutesAndSeconds = (millis: number) => {
 	const minutes: number = Math.floor(millis / 60000);
@@ -9,7 +10,7 @@ const  millisToMinutesAndSeconds = (millis: number) => {
 	return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 };
 
-export default function TrackSmall({track}: any){
+export default function TrackSmall({track}: {track: Track}){
 	const [trackIcon, setTrackIcon] = useState<JSX.Element>(<Avatar src={track.album.images[1].url} />);
 
 	const handleMouseEnter = () => {
